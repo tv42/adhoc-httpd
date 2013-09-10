@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path"
+	"path/filepath"
 )
 
 var (
@@ -20,7 +20,7 @@ var Usage = func() {
 }
 
 func main() {
-	prog := path.Base(os.Args[0])
+	prog := filepath.Base(os.Args[0])
 	log.SetFlags(0)
 	log.SetPrefix(prog + ": ")
 
