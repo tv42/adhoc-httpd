@@ -14,7 +14,7 @@ var (
 	port = flag.Int("port", 8000, "TCP port to listen on")
 )
 
-var Usage = func() {
+func usage() {
 	fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
 	flag.PrintDefaults()
 }
@@ -24,11 +24,11 @@ func main() {
 	log.SetFlags(0)
 	log.SetPrefix(prog + ": ")
 
-	flag.Usage = Usage
+	flag.Usage = usage
 	flag.Parse()
 
 	if flag.NArg() > 1 {
-		Usage()
+		usage()
 		os.Exit(1)
 	}
 
