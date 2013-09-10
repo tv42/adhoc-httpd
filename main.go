@@ -14,14 +14,15 @@ var (
 	port = flag.Int("port", 8000, "TCP port to listen on")
 )
 
+var prog = filepath.Base(os.Args[0])
+
 func usage() {
 	fmt.Fprintf(os.Stderr, "Usage:\n")
-	fmt.Fprintf(os.Stderr, "  %s [-host=ADDR] [-port=NUM] [DIR]\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, "  %s [-host=ADDR] [-port=NUM] [DIR]\n", prog)
 	flag.PrintDefaults()
 }
 
 func main() {
-	prog := filepath.Base(os.Args[0])
 	log.SetFlags(0)
 	log.SetPrefix(prog + ": ")
 
