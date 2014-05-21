@@ -34,13 +34,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	dir := "."
+	path := "."
 	if flag.NArg() == 1 {
-		dir = flag.Arg(0)
+		path = flag.Arg(0)
 	}
 
-	log.Printf("Serving %q at http://%s:%d/", dir, *host, *port)
-	http.Handle("/", http.FileServer(http.Dir(dir)))
+	log.Printf("Serving %q at http://%s:%d/", path, *host, *port)
+	http.Handle("/", http.FileServer(http.Dir(path)))
 	addr := fmt.Sprintf("%s:%d", *host, *port)
 	err := http.ListenAndServe(addr, nil)
 	if err != nil {
