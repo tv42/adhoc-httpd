@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+
+	"github.com/tv42/adhoc-httpd/order"
 )
 
 var (
@@ -40,7 +42,8 @@ func main() {
 	}
 
 	log.Printf("Serving %q at http://%s:%d/", path, *host, *port)
-	http.Handle("/", http.FileServer(http.Dir(path)))
+	fs := order.Order{http.Dir(path)}
+	http.Handle("/", http.FileServer(fs))
 	addr := fmt.Sprintf("%s:%d", *host, *port)
 	err := http.ListenAndServe(addr, nil)
 	if err != nil {
