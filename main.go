@@ -4,13 +4,15 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 )
 
 var (
-	host = flag.String("host", "0.0.0.0", "IP address to bind to")
+	host = flag.String("host", "", "IP address to bind to")
 	port = flag.Int("port", 8000, "TCP port to listen on")
 )
 
@@ -39,11 +41,16 @@ func main() {
 		path = flag.Arg(0)
 	}
 
-	log.Printf("Serving %q at http://%s:%d/", path, *host, *port)
-	http.Handle("/", http.FileServer(http.Dir(path)))
-	addr := fmt.Sprintf("%s:%d", *host, *port)
-	err := http.ListenAndServe(addr, nil)
+	addr := net.JoinHostPort(*host, strconv.Itoa(*port))
+	l, err := net.Listen("tcp", addr)
 	if err != nil {
+		log.Fatalf("cannot listen: %v", err)
+	}
+	log.Printf("Serving %q at http://%s/", path, l.Addr())
+	srv := &http.Server{
+		Handler: http.FileServer(http.Dir(path)),
+	}
+	if err := srv.Serve(l); err != nil {
 		log.Fatal(err)
 	}
 }
